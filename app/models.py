@@ -7,3 +7,10 @@ class User(db.Model):
 
     def __repr__(self):
         return f'User {self.username}'
+
+
+class Pitch(db.Model):
+    __tablename__ = 'pitches'
+    id = db.Column(db.Integer, primary_key = True)
+    title = db.Column(db.String(255),nullable = False)
+    post = db.Column(db.Text(), nullable = False)
