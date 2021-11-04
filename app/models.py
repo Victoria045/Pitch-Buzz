@@ -8,6 +8,8 @@ class User(db.Model):
     username = db.Column(db.String(255),unique = True,nullable = False)
     password_secure = db.Column(db.String(255),nullable = False)
     email = db.Column(db.String(255),unique = True,index = True)
+    bio = db.Column(db.String(255))
+    profile_pic_path = db.Column(db.String())
     pitches = db.relationship('Pitch', backref='user', lazy='dynamic')
     comment = db.relationship('Comment', backref='user', lazy='dynamic')
     upvote = db.relationship('Upvote',backref='user',lazy='dynamic')
