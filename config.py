@@ -9,6 +9,8 @@ class Config:
 
     SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://victoria:pass@localhost/pitch'
 
+    UPLOADED_PHOTOS_DEST ='app/static/photos'
+
     # SQLALCHEMY_TRACK_MODIFICATIONS = False
     
 
