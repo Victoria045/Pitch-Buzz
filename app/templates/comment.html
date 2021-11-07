@@ -1,12 +1,19 @@
 {% extends 'base.html'%}
 {% import 'bootstrap/wtf.html' as wtf %}
 
+<!-- Styles block -->
+
+{% block styles%} 
+{{ super() }}
+<link rel="stylesheet" href="{{url_for('static',filename='css/comment.css')}}" />
+{% endblock %}
+
 {% block content %}
     <div class="container" id="allcomments" >
         <div class="row">
 
             {% if all_comments %}
-                <div class="col-md-7" >
+                <div class="col-md-7 comment-wrapper" >
                     <h3 class="text-center" id="coms">All comments for the post</h3>
                     {% for comment in all_comments %}
                        <div class="card w-90 mb-3" >

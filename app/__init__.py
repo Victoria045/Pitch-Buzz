@@ -1,4 +1,5 @@
 from flask import Flask
+from flask_moment import Moment
 from flask_simplemde import SimpleMDE
 from flask_bootstrap import Bootstrap
 from config import config_options
@@ -15,6 +16,7 @@ login_manager.login_view = 'auth.login'
 
 
 bootstrap = Bootstrap()
+moment = Moment()
 db = SQLAlchemy()
 photos = UploadSet('photos',IMAGES)
 mail = Mail()
@@ -27,16 +29,15 @@ def create_app(config_name):
 
     # Creating the app configurations
     app.config.from_object(config_options[config_name])
-    # app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 
     # Initializing flask extensions
     bootstrap.init_app(app)
+    moment.init_app(app)
     db.init_app(app) 
     login_manager.init_app(app)
     mail.init_app(app)
-    simple.init_app(app)
-    # db = SQLAlchemy(app)  
+    simple.init_app(app)  
 
     # Registering the blueprint
     from .main import main as main_blueprint
@@ -45,14 +46,10 @@ def create_app(config_name):
 
     from .auth import auth as auth_blueprint
     app.register_blueprint(auth_blueprint,url_prefix = '/authenticate')
-
-    # setting config
-    # from .request import configure_request
-    # configure_request(app)
+    
     
     # configure UploadSet
     configure_uploads(app,photos)
 
-    # Will add the views and forms
 
     return app

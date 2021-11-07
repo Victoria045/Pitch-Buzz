@@ -1,6 +1,7 @@
 from flask import render_template,request,redirect, url_for,abort
 from . import main
 from flask_login import login_required, current_user
+from flask_moment import Moment
 from ..models import User,Pitch,Comment,Upvote,Downvote
 from .forms import UpdateProfile,PitchForm,CommentForm
 from .. import db,photos
@@ -12,11 +13,13 @@ from ..models import User,Pitch,Comment,Upvote,Downvote
 def index():
 
     pitches = Pitch.query.all()
-    job = Pitch.query.filter_by(category = 'Job').all() 
+    interview = Pitch.query.filter_by(category = 'Interview').all() 
     event = Pitch.query.filter_by(category = 'Events').all()
-    advertisement = Pitch.query.filter_by(category = 'Advertisement').all()
+    print(event)
+    product = Pitch.query.filter_by(category = 'Product').all()
+    
 
-    return render_template('index.html', job = job,event = event, pitches = pitches,advertisement= advertisement)
+    return render_template('index.html', interview = interview,event = event, pitches = pitches,product= product)
     
 
 @main.route('/create_new', methods = ['POST','GET'])
@@ -47,7 +50,7 @@ def comment(pitch_id):
         user_id = current_user._get_current_object().id
         new_comment = Comment(comment = comment,user_id = user_id,pitch_id = pitch_id)
         new_comment.save_comment()
-        return redirect(url_for('.comment', pitch_id = pitch_id))
+        return redirect(url_for('main.index'))
 
     return render_template('comment.html', form =form, pitch = pitch,all_comments=all_comments)
 

@@ -1,12 +1,7 @@
-.nav-wrapper {
-  /* display: flex;
-  justify-content: space-between; */
+ul li a {
+  display: inline-block;
 }
 
-.nav-left {
-  float: left;
-}
-
-.nav-right {
-  float: right;
+li {
+  list-style-type: none;
 }
