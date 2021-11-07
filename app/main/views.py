@@ -1,22 +1,23 @@
-from flask import render_template, redirect, url_for,abort,request
+from flask import render_template,request,redirect, url_for,abort
 from . import main
-from flask_login import login_required,current_user
+from flask_login import login_required, current_user
 from ..models import User,Pitch,Comment,Upvote,Downvote
 from .forms import UpdateProfile,PitchForm,CommentForm
 from .. import db,photos
+from ..models import User,Pitch,Comment,Upvote,Downvote
 
+
+# Views
 @main.route('/')
-
-    '''
-    View root page function that returns the index page and its data
-    '''
-
 def index():
+
     pitches = Pitch.query.all()
     job = Pitch.query.filter_by(category = 'Job').all() 
     event = Pitch.query.filter_by(category = 'Events').all()
     advertisement = Pitch.query.filter_by(category = 'Advertisement').all()
+
     return render_template('index.html', job = job,event = event, pitches = pitches,advertisement= advertisement)
+    
 
 @main.route('/create_new', methods = ['POST','GET'])
 @login_required
@@ -28,10 +29,11 @@ def new_pitch():
         category = form.category.data
         user_id = current_user
         new_pitch_object = Pitch(post=post,user_id=current_user._get_current_object().id,category=category,title=title)
-        new_pitch_object.save_p()
+        new_pitch_object.save_pitch()
         return redirect(url_for('main.index'))
         
     return render_template('create_pitch.html', form = form)
+
 
 @main.route('/comment/<int:pitch_id>', methods = ['POST','GET'])
 @login_required
@@ -44,39 +46,49 @@ def comment(pitch_id):
         pitch_id = pitch_id
         user_id = current_user._get_current_object().id
         new_comment = Comment(comment = comment,user_id = user_id,pitch_id = pitch_id)
-        new_comment.save_c()
+        new_comment.save_comment()
         return redirect(url_for('.comment', pitch_id = pitch_id))
+
     return render_template('comment.html', form =form, pitch = pitch,all_comments=all_comments)
 
 
-@main.route('/user/<name>')
-def profile(name):
-    user = User.query.filter_by(username = name).first()
-    user_id = current_user._get_current_object().id
-    posts = Pitch.query.filter_by(user_id = user_id).all()
+# Review = reviews.Review
+
+
+@main.route('/user/<uname>')
+def profile(uname):
+    user = User.query.filter_by(username = uname).first()
+
     if user is None:
         abort(404)
 
-    return render_template("profile/profile.html", user = user,posts=posts)
+    return render_template("profile/profile.html", user = user)
 
-@main.route('/user/<name>/updateprofile', methods = ['POST','GET'])
+
+@main.route('/user/<uname>/update',methods = ['GET','POST'])
 @login_required
-def updateprofile(name):
-    form = UpdateProfile()
-    user = User.query.filter_by(username = name).first()
-    if user == None:
+def update_profile(uname):
+    user = User.query.filter_by(username = uname).first()
+    if user is None:
         abort(404)
+
+    form = UpdateProfile()
+
     if form.validate_on_submit():
         user.bio = form.bio.data
-        user.save_u()
-        return redirect(url_for('.profile',name = name))
+
+        db.session.add(user)
+        db.session.commit()
+
+        return redirect(url_for('.profile',uname=user.username))
+
     return render_template('profile/update.html',form =form)
 
 
-@main.route('/user/<name>/update/pic',methods= ['POST'])
+@main.route('/user/<uname>/update/pic',methods= ['POST'])
 @login_required
-def update_pic(name):
-    user = User.query.filter_by(username = name).first()
+def update_pic(uname):
+    user = User.query.filter_by(username = uname).first()
     if 'photo' in request.files:
         filename = photos.save(request.files['photo'])
         path = f'photos/{filename}'
@@ -100,7 +112,7 @@ def like(id):
     new_vote = Upvote(user = current_user, pitch_id=id)
     new_vote.save()
     return redirect(url_for('main.index',id=id))
-    
+
 
 @main.route('/dislike/<int:id>',methods = ['POST','GET'])
 @login_required
@@ -112,11 +124,7 @@ def dislike(id):
         print(valid_string+" "+to_str)
         if valid_string == to_str:
             return redirect(url_for('main.index',id=id))
-        else:'''
-    View root page function that returns the index page and its data
-    ''''''
-    View root page function that returns the index page and its data
-    '''
+        else:
             continue
     new_downvote = Downvote(user = current_user, pitch_id=id)
     new_downvote.save()
