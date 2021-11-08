@@ -1,4 +1,5 @@
 Hello {{user.username}}
 Welcome to PichBuzz
 We have just seen you have signed up for our application and want to welcome you to the family. 
-Please enjoy the reviews of all your  favourite films.
+You can post your favorite pitches and they get voted on.
+Enjoy!
