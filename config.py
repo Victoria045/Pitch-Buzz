@@ -14,9 +14,8 @@ class Config:
 
     UPLOADED_PHOTOS_DEST ='app/static/photos'
 
-    SQLALCHEMY_TRACK_MODIFICATIONS = True
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
 
-    # SQLALCHEMY_TRACK_MODIFICATIONS = False
     
     #  email configurations
     MAIL_SERVER = 'smtp.googlemail.com'
