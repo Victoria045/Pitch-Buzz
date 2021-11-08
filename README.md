@@ -6,6 +6,16 @@ Built by: [Victoria Beryl](https://github.com/Victoria045)
 ## Description
 Pitch-Buzz is a flask application where users have one minute to submit their meaningful pitches and other users get to vote on them and leave comments to give feedback on them.
 
+# User Story 
+* See the pitches other people have posted.
+* Vote on the pitch you liked and give it a downvote or upvote.
+* Signed in for one to leave a comment.
+* Receive a welcoming email once signed up.
+* view the pitches created in the profile page.
+* Comment on the different pitches and leave feedback.
+* Submit a pitch in any category.
+* View the different categories.
+
 #### Prerequisites 
 * python3.6
 * pip
