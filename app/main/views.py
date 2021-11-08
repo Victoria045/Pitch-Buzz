@@ -15,7 +15,6 @@ def index():
     pitches = Pitch.query.all()
     interview = Pitch.query.filter_by(category = 'Interview').all() 
     event = Pitch.query.filter_by(category = 'Events').all()
-    print(event)
     product = Pitch.query.filter_by(category = 'Product').all()
     
 
